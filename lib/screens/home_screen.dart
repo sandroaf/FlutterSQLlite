@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttersqllite/db/db_helper.dart';
+import 'package:fluttersqllite/screens/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,6 +12,28 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/',
+                (route) => false,
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: dbHelper.getUsers(),
@@ -43,7 +66,6 @@ class HomeScreen extends StatelessWidget {
                       'Job: ${user['job']}',
                       style: TextStyle(fontSize: 18.0),
                     ),
-                    // Add other UI components as needed
                   ],
                 ),
               );

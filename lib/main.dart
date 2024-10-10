@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttersqllite/screens/home_screen.dart';
 import 'package:fluttersqllite/screens/login_screen.dart';
 import 'package:fluttersqllite/screens/signup_page.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
-  print(databaseFactory);
   runApp(const MyApp());
 }
 

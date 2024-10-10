@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseHelper {
   static Database? _database;
@@ -14,12 +16,20 @@ class DatabaseHelper {
   }
 
   Future<Database> initDatabase() async {
-    String path = join(await getDatabasesPath(), 'your_database.db');
+    if (Platform.isAndroid || Platform.isIOS) {
+      String path = join(await getDatabasesPath(), 'your_database.db');
 
-    return openDatabase(path, onCreate: (db, version) {
-      return db.execute(
-          'CREATE TABLE $tableName(id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, age INTEGER, job TEXT)');
-    }, version: 1);
+      return openDatabase(path, onCreate: (db, version) {
+        return db.execute(
+            'CREATE TABLE $tableName(id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, age INTEGER, job TEXT)');
+      }, version: 1);
+    } else {
+      // Usar sqflite_ffi para desktop
+      sqfliteFfiInit();
+      var dbFactory = databaseFactoryFfi;
+      var db = await dbFactory.openDatabase('my_database.db');
+      return db;
+    }
   }
 
   Future<void> insertUser(Map<String, dynamic> user) async {

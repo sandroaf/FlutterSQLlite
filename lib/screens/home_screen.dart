@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttersqllite/db/db_helper.dart';
-import 'package:fluttersqllite/screens/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,20 +10,18 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-            },
+            icon: const Icon(Icons.edit),
+            onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
-            },
+            icon: const Icon(Icons.delete),
+            onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               Navigator.pushNamedAndRemoveUntil(
                 context,
@@ -49,28 +46,28 @@ class HomeScreen extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       'Username: ${user['username']}',
-                      style: TextStyle(fontSize: 18.0),
+                      style: const TextStyle(fontSize: 18.0),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Text(
                       'Email: ${user['email']}',
-                      style: TextStyle(fontSize: 18.0),
+                      style: const TextStyle(fontSize: 18.0),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Text(
                       'Age: ${user['age']}',
-                      style: TextStyle(fontSize: 18.0),
+                      style: const TextStyle(fontSize: 18.0),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Text(
                       'Job: ${user['job']}',
-                      style: TextStyle(fontSize: 18.0),
+                      style: const TextStyle(fontSize: 18.0),
                     ),
                   ],
                 ),
               );
             } else {
-              return Center(
+              return const Center(
                 child: Text('No user data found.'),
               );
             }
@@ -79,7 +76,7 @@ class HomeScreen extends StatelessWidget {
               child: Text('Error: ${snapshot.error}'),
             );
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },

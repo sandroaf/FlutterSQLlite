@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttersqllite/db/db_helper.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,23 +22,23 @@ class LoginPage extends StatelessWidget {
           children: <Widget>[
             TextFormField(
               controller: usernameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Username',
                 prefixIcon: Icon(Icons.person),
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextFormField(
               controller: passwordController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Password',
                 prefixIcon: Icon(Icons.lock),
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () async {
                 List<Map<String, dynamic>> users =
@@ -56,14 +56,14 @@ class LoginPage extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Error'),
-                        content: Text('Invalid username or password'),
+                        title: const Text('Error'),
+                        content: const Text('Invalid username or password'),
                         actions: <Widget>[
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       );
@@ -77,7 +77,7 @@ class LoginPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Login',
                 style: TextStyle(
                   fontSize: 18.0,
@@ -85,12 +85,12 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/signup');
               },
-              child: Text(
+              child: const Text(
                 'Sign Up',
                 style: TextStyle(fontSize: 16.0, color: Colors.blue),
               ),

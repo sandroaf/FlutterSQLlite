@@ -2,8 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:fluttersqllite/screens/home_screen.dart';
 import 'package:fluttersqllite/screens/login_screen.dart';
 import 'package:fluttersqllite/screens/signup_page.dart';
+import 'package:fluttersqllite/db/db_helper.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Teste de conexão com o banco de dados
+  try {
+    final dbHelper = DatabaseHelper();
+    bool connected = await dbHelper.testConnection();
+    print('Database connection: ${connected ? 'SUCCESS' : 'FAILED'}');
+  } catch (e) {
+    print('Database initialization error: $e');
+  }
+
   runApp(const MyApp());
 }
 

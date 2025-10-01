@@ -74,15 +74,68 @@ class SignupPage extends StatelessWidget {
               const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () async {
-                  Map<String, dynamic> user = {
-                    'username': usernameController.text,
-                    'email': emailController.text,
-                    'password': passwordController.text,
-                    'age': int.parse(ageController.text),
-                    'job': jobController.text,
-                  };
-                  await dbHelper.insertUser(user);
-                  Navigator.pop(context); // Go back to previous screen
+                  // Validate input fields
+                  if (usernameController.text.isEmpty ||
+                      emailController.text.isEmpty ||
+                      passwordController.text.isEmpty ||
+                      ageController.text.isEmpty ||
+                      jobController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please fill all fields'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
+
+                  try {
+                    // Check if username already exists
+                    bool exists =
+                        await dbHelper.userExists(usernameController.text);
+
+                    if (exists) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Username already exists'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      return;
+                    }
+
+                    Map<String, dynamic> user = {
+                      'username': usernameController.text,
+                      'email': emailController.text,
+                      'password': passwordController.text,
+                      'age': int.parse(ageController.text),
+                      'job': jobController.text,
+                    };
+
+                    await dbHelper.insertUser(user);
+
+                    // Check if widget is still mounted before using context
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('User registered successfully!'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      Navigator.pop(context);
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error: $e'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),

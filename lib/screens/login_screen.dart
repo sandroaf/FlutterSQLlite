@@ -41,34 +41,59 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () async {
-                List<Map<String, dynamic>> users =
-                    await dbHelper.getUsers(); // Fetch all users
-                String username = usernameController.text;
-                String password = passwordController.text;
-                bool isUserExists = users.any((user) =>
-                    user['username'] == username &&
-                    user['password'] == password);
-                if (isUserExists) {
-                  Navigator.pushNamed(context, '/home');
-                } else {
-                  // Show error message
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Error'),
-                        content: const Text('Invalid username or password'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
+                // Validate input fields
+                if (usernameController.text.isEmpty ||
+                    passwordController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter username and password'),
+                      backgroundColor: Colors.red,
+                    ),
                   );
+                  return;
+                }
+
+                try {
+                  String username = usernameController.text;
+                  String password = passwordController.text;
+
+                  Map<String, dynamic>? user =
+                      await dbHelper.getUser(username, password);
+
+                  // Check if widget is still mounted before using context
+                  if (!context.mounted) return;
+
+                  if (user != null) {
+                    Navigator.pushNamed(context, '/home');
+                  } else {
+                    // Show error message
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Error'),
+                          content: const Text('Invalid username or password'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Database error: $e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(

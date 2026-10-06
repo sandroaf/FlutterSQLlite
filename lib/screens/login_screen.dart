@@ -64,7 +64,11 @@ class LoginPage extends StatelessWidget {
                   if (!context.mounted) return;
 
                   if (user != null) {
-                    Navigator.pushNamed(context, '/home');
+                    Navigator.pushNamed(
+                      context,
+                      '/home',
+                      arguments: user,
+                    );
                   } else {
                     // Show error message
                     showDialog(

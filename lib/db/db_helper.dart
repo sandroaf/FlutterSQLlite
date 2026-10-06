@@ -1,4 +1,3 @@
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'dart:io' show Platform;
@@ -90,6 +89,38 @@ class DatabaseHelper {
       return result;
     } catch (e) {
       print('Error fetching users: $e');
+      throw Exception('Database error: $e');
+    }
+  }
+
+  Future<int> updateUser(int id, Map<String, dynamic> user) async {
+    try {
+      final db = await database;
+      return await db.update(
+        tableName,
+        user,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    } catch (e) {
+      print('Error updating user: $e');
+      if (e.toString().contains('UNIQUE constraint failed')) {
+        throw Exception('Username already exists');
+      }
+      throw Exception('Database error: $e');
+    }
+  }
+
+  Future<int> deleteUser(int id) async {
+    try {
+      final db = await database;
+      return await db.delete(
+        tableName,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    } catch (e) {
+      print('Error deleting user: $e');
       throw Exception('Database error: $e');
     }
   }

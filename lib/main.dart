@@ -34,7 +34,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) => HomeScreen(
+              user: ModalRoute.of(context)!.settings.arguments!
+                  as Map<String, dynamic>,
+            ),
       },
     );
   }
